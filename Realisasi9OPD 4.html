@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Realisasi Fisik & Keuangan Divisi</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f4f4;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background-color: #0060C0;
+      color: white;
+      padding: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      z-index: 1000;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px;
+      justify-content: center;
+      background-color: #0060C0;
+    }
+
+    .card {
+      background: rgb(250, 248, 248);
+      border-radius: 25px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      width: 350px;
+    }
+
+    .section-title {
+      font-weight: bold;
+      margin-top: 0px;
+      margin-bottom: 10px;
+    }
+
+    .divider {
+      height: 3px;
+      background: #ddd;
+      margin: 15px 0;
+    }
+
+    .info-box {
+      background-color:#0060C0;
+      color: white;
+      padding: 10px;
+      border-radius: 15px;
+      margin-bottom: 15px;
+      margin-top: 0px;
+      text-align: center;
+      font-weight: bold;
+      font-size: large;
+    }
+
+    .progress-container {
+      margin-top: 10px;
+    }
+
+    .progress-label {
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+
+    .progress-bar {
+      position: relative;
+      height: 24px;
+      background: #ddd;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 12px 12px 12px 12px;
+      transition: left 1.5s ease;
+    }
+
+    .progress-text {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      font-weight: bold;
+      transition: left 1.5s ease;
+    }
+    footer {
+      text-align: center;
+      background-color: #003366;
+      color: white;
+      padding: 10px;
+      font-size: 11px;
+    }
+
+    canvas {
+      max-width: 100%;
+      margin-top: 10px;
+    }
+
+#divisi1_bar {
+  height: 500px;
+}
+
+    [id] {
+      scroll-margin-top: 80px;
+    }
+  </style>
+
+
+
+<!-- Open Graph Meta Tags for WhatsApp Sharing -->
+<meta property="og:title" content="Realisasi Fisik & Keuangan 9 OPD Mitra per Juni 2025" />
+<meta property="og:description" content="Lihat progres fisik dan keuangan dari 9 OPD Mitra hingga Juni 2025." />
+<meta property="og:image" content="https://junzuw.github.io/capaian9OPD-v2/thumbnail.jpg" />
+<meta property="og:url" content="https://junzuw.github.io/capaian9OPD-v2/Realisasi9OPD.html" />
+<meta property="og:type" content="website" />
+
+
+
+
+
+
+
+</head>
+<body>
+
+<header>
+  Realisasi Fisik & Keuangan | 9 OPD Mitra Bidang Infraswil | Juni 2025 
+</header>
+
+<div class="container" id="cards-container"></div>
+
+<script>
+const dataDivisi = [
+   {
+    id: 'bappeda',
+    nama: '> BAPPELITBANGDA <',
+    dataBulan1: {
+      alokasi: 41907775472,
+      realisasi: 3839270900,
+      persFisik: 7.51
+
+    },
+    dataTotal: {
+      alokasi: 41907775472,
+      realisasi: 17553898181,
+      persFisik: 42.07
+    }
+  },
+  {
+    id: 'bpbd',
+    nama: '> BPBD <',
+    dataBulan1: {
+      alokasi: 8273328445,
+      realisasi: 687601924,
+      persFisik: 0.00
+    },
+    dataTotal: {
+      alokasi: 8273328445,
+      realisasi: 3542727585,
+      persFisik: 35.48
+    }
+  },
+  {
+    id: 'bmbk',
+    nama: '> BM & BK <',
+    dataBulan1: {
+      alokasi: 592904093714,
+      realisasi: 4192848966,
+      persFisik: 0.01
+
+    },
+    dataTotal: {
+      alokasi: 592904093714,
+      realisasi: 21614754494,
+      persFisik: 2.37
+    }
+  },
+  {
+    id: 'sdacktr',
+    nama: '> SDA & CKTR <',
+    dataBulan1: {
+      alokasi: 341461521452,
+      realisasi: 4005415596,
+      persFisik: 1.05
+    },
+    dataTotal: {
+      alokasi: 341461521452,
+      realisasi: 21822104272,
+      persFisik: 6.29
+
+    }
+  },
+  {
+    id: 'perkimtan',
+    nama: '> PERKIMTAN <',
+    dataBulan1: {
+      alokasi: 43921176048,
+      realisasi: 1526615445,
+      persFisik: 3.44
+    },
+    dataTotal: {
+      alokasi: 43921176048,
+      realisasi: 7011141490,
+      persFisik: 31.62
+    }
+  },
+  {
+    id: 'kominfo',
+    nama: '> KOMINFO <',
+    dataBulan1: {
+      alokasi: 33934106804,
+      realisasi: 1569659219,
+      persFisik: 0.00
+    },
+    dataTotal: {
+      alokasi: 33934106804,
+      realisasi: 8390435822,
+      persFisik: 20.18
+
+    }
+  },
+  {
+    id: 'dishub',
+    nama: '> DISHUB <',
+    dataBulan1: {
+      alokasi: 58985367124,
+      realisasi: 2977127128,
+      persFisik: 5.30
+    },
+    dataTotal: {
+      alokasi: 58985367124,
+      realisasi: 15475102449,
+      persFisik: 26.72
+    }
+  },
+  {
+    id: 'dispora',
+    nama: '> DISPORA <',
+    dataBulan1: {
+      alokasi: 43136831830,
+      realisasi: 1655274808,
+      persFisik: 3.87
+    },
+    dataTotal: {
+      alokasi: 43136831830,
+      realisasi: 7995262011,
+      persFisik: 18.59
+    }
+  },
+  {
+    id: 'barjas',
+    nama: '> BARJAS <',
+    dataBulan1: {
+      alokasi: 1996491844,
+      realisasi: 118481982,
+      persFisik: 23.77
+    },
+    dataTotal: {
+      alokasi: 1996491844,
+      realisasi: 463265481,
+      persFisik: 30.10
+
+    }
+  },
+
+];
+
+// Hitung otomatis sisa dan persKeu
+dataDivisi.forEach(divisi => {
+  ['dataBulan1', 'dataTotal'].forEach(key => {
+    const d = divisi[key];
+    d.sisa = d.alokasi - d.realisasi;
+    d.persKeu = d.alokasi ? (d.realisasi / d.alokasi) * 100 : 0;
+  });
+});
+
+function createProgress(label, value, color) {
+  const id = 'progress_' + Math.random().toString(36).substr(2, 9);
+  return `
+    <div class="progress-container">
+      <div class="progress-label">${label}</div>
+      <div class="progress-bar" data-value="${value}" data-color="${color}" id="${id}">
+        <div class="progress-fill"></div>
+        <div class="progress-text">0%</div>
+      </div>
+    </div>
+  `;
+}
+
+function animateBars() {
+  const bars = document.querySelectorAll('.progress-bar');
+  bars.forEach(bar => {
+    const fill = bar.querySelector('.progress-fill');
+    const text = bar.querySelector('.progress-text');
+    const target = parseFloat(bar.getAttribute('data-value'));
+    const color = bar.getAttribute('data-color');
+    let current = 0;
+
+    fill.style.backgroundColor = color;
+
+    function animate() {
+      if (current <= target) {
+        fill.style.width = `${current}%`;
+        text.textContent = `${current.toFixed(0)}%`;
+
+        if (target > 25) {
+          text.style.color = 'white';
+          text.style.left = '0';
+          text.style.justifyContent = 'center';
+          text.style.width = `${current}%`;
+        } else {
+          text.style.color = 'black';
+          text.style.left = `calc(${current}% + 8px)`;
+        }
+
+        current += 0.7;
+        requestAnimationFrame(animate);
+      } else {
+        fill.style.width = `${target}%`;
+        text.textContent = `${target.toFixed(2)}%`;
+      }
+    }
+
+    animate();
+  });
+}
+
+function createCard(divisi) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.id = divisi.id;
+  card.innerHTML = `
+    <h3 style="text-align: center; color: #C000C0; margin-top: 10px; margin-bottom: 15px; font-size: 21px">${divisi.nama}</h3>
+    <div class="info-box">Alokasi Anggaran : <br>Rp. ${divisi.dataBulan1.alokasi.toLocaleString('id-ID')}</div>
+    <div class="divider"></div>
+    <div class="section-title">Realisasi Bulan Juni</div>
+    <canvas id="${divisi.id}_pie"></canvas>
+    ${createProgress('Realisasi Keuangan (%)', divisi.dataBulan1.persKeu, '#00C000')}
+    ${createProgress('Realisasi Fisik (%)', divisi.dataBulan1.persFisik, '#C000C0')}
+    <div class="divider"></div>
+    <div class="section-title">Total Realisasi Hingga Bulan Juni</div>
+    <canvas id="${divisi.id}_bar"></canvas>
+    ${createProgress('Realisasi Keuangan (%)', divisi.dataTotal.persKeu, '#00C000')}
+    ${createProgress('Realisasi Fisik (%)', divisi.dataTotal.persFisik, '#C000C0')}
+  `;
+  document.getElementById('cards-container').appendChild(card);
+
+  // PIE CHART
+  new Chart(document.getElementById(`${divisi.id}_pie`), {
+    type: 'pie',
+    data: {
+      labels: ['Realisasi', 'Sisa Dana'],
+      datasets: [{
+        data: [divisi.dataBulan1.realisasi, divisi.dataBulan1.sisa],
+        backgroundColor: ['#00C000', '#0060C0'],
+        borderWidth: 3
+      }]
+    },
+    options: {
+      responsive: true,
+      animation: {
+        animateRotate: true,
+        animateScale: true,
+        duration: 2000,
+        easing: 'easeOutBounce'
+      },
+      plugins: {
+        datalabels: {
+          formatter: (value) => value.toLocaleString('id-ID'),
+          color: 'white',
+          font: { weight: 'bold' }
+        }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+
+  // BAR CHART
+new Chart(document.getElementById(`${divisi.id}_bar`), {
+  type: 'bar',
+  data: {
+    labels: ['Alokasi', 'Realisasi', 'Sisa'],
+    datasets: [{
+      label: 'Nilai',
+      data: [
+        divisi.dataTotal.alokasi / 1_000_000_000,
+        divisi.dataTotal.realisasi / 1_000_000_000,
+        divisi.dataTotal.sisa / 1_000_000_000
+      ],
+      backgroundColor: ['#0060C0', '#00C000', '#0060C0'],
+      rawData: [
+        divisi.dataTotal.alokasi,
+        divisi.dataTotal.realisasi,
+        divisi.dataTotal.sisa
+      ]
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    plugins: {
+      datalabels: {
+        formatter: (value) => `${value.toFixed(2)} M`,
+color: function(context) {
+  const index = context.dataIndex;
+  const raw = context.dataset.rawData;
+  const alokasi = raw[0];
+
+  if (index === 1) { // Realisasi
+    const realisasi = raw[1];
+    const persen = (realisasi / alokasi) * 100;
+    return persen < 25 ? 'black' : 'white';
+  }
+
+  if (index === 2) { // Sisa
+    const sisa = raw[2];
+    const persen = (sisa / alokasi) * 100;
+    return persen < 25 ? 'black' : 'white';
+  }
+
+  return 'white'; // Alokasi
+},
+
+align: function(context) {
+  const index = context.dataIndex;
+  const raw = context.dataset.rawData;
+  const alokasi = raw[0];
+
+  if (index === 1) { // Realisasi
+    const persen = (raw[1] / alokasi) * 100;
+    return persen < 25 ? 'end' : 'center';
+  }
+
+  if (index === 2) { // Sisa
+    const persen = (raw[2] / alokasi) * 100;
+    return persen < 25 ? 'end' : 'center';
+  }
+
+  return 'center'; // Alokasi
+},
+
+anchor: function(context) {
+  const index = context.dataIndex;
+  const raw = context.dataset.rawData;
+  const alokasi = raw[0];
+
+  if (index === 1) { // Realisasi
+    const persen = (raw[1] / alokasi) * 100;
+    return persen < 25 ? 'end' : 'center';
+  }
+
+  if (index === 2) { // Sisa
+    const persen = (raw[2] / alokasi) * 100;
+    return persen < 25 ? 'end' : 'center';
+  }
+
+  return 'center'; // Alokasi
+          },
+          font: { weight: 'bold' }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const value = context.dataset.rawData[context.dataIndex];
+              return `Nilai: Rp ${value.toLocaleString('id-ID')}`;
+            }
+          }
+        },
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Nilai (Miliar)'
+          }
+        }
+      },     
+      animation: { duration: 1000 }
+    },
+    plugins: [ChartDataLabels]
+  });
+}
+
+dataDivisi.forEach(createCard);
+animateBars();
+</script>
+
+<footer id="footer">
+Data Extract -> https://sulselprov.e-planning.id | 06 Juni 2025 <br>Copyright &copy; by @zuwlend.
+</footer>
+
+<div style="
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 999;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  user-select: none;">
+  <a href="Index.html" style="color: #252525; font-size: 14px; font-weight: bold; text-decoration: none; display: block; margin-bottom: 0px;">back</a>
+  <a href="Index.html" style="color: #ff6800; font-size: 32px; font-weight: bold; text-decoration: none; display: block; line-height: 1;">&#11013;</a>
+</div>
+
+</body>
+</html>
+ 
